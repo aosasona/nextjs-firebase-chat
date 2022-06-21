@@ -36,8 +36,9 @@ const Input: FC<Props> = ({
       <input
         type={type}
         name={name || ""}
-        className="bg-neutral-800 text-sm rounded-lg focus:border-neutral-200 focus:border-2 focus:outline-none py-4 px-3"
+        className="bg-neutral-800 text-sm rounded-lg focus:border-neutral-200 placeholder:text-neutral-700 focus:border-2 focus:outline-none py-4 px-3"
         required={required}
+        placeholder={label || ""}
         value={value}
         onChange={onChange}
       />
