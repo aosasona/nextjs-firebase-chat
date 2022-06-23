@@ -60,8 +60,8 @@ const Login: NextPage = () => {
           type: "LOGIN",
           payload: {
             ID: data.data.id,
-            Username: data.data.username,
-            Token: data.data.token,
+            username: data.data.username,
+            token: data.data.token,
           },
         });
       })

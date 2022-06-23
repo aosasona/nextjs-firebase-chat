@@ -58,13 +58,14 @@ const SignUp: NextPage = () => {
         confirmPassword: data.confirmPassword,
       })
       .then(({ data }) => {
+        console.log(data);
         setStatus({ ...status, loading: false });
         dispatch({
           type: "LOGIN",
           payload: {
             ID: data.data.id,
-            Username: data.data.username,
-            Token: data.data.token,
+            username: data.data.username,
+            token: data.data.token,
           },
         });
       })

@@ -1,3 +1,5 @@
+import Cookies from "js-cookie";
+
 interface ContextInterface {
   ID: string | null;
   Username: string | null;
@@ -9,6 +11,9 @@ interface ContextInterface {
 function reducer(state: ContextInterface, action: any): ContextInterface {
   switch (action.type) {
     case "LOGIN":
+      // Set cookies
+
+      // Set state
       return {
         ...state,
         ID: action.payload.ID,
