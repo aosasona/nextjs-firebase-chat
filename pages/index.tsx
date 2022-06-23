@@ -121,7 +121,7 @@ const Login: NextPage = () => {
               />
 
               <div className="mt-8">
-                <Button name="sign-in" type="submit">
+                <Button name="sign-in" type="submit" disabled={status.loading}>
                   {status.loading ? "Loading..." : "Login"}
                 </Button>
               </div>

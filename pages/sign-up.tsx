@@ -136,7 +136,7 @@ const SignUp: NextPage = () => {
                 />
               </div>
               <div className="mt-4">
-                <Button name="sign-up" type="submit">
+                <Button name="sign-up" type="submit" disabled={status.loading}>
                   {status.loading ? "Loading..." : "Create An Account"}
                 </Button>
               </div>
