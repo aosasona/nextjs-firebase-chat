@@ -12,6 +12,10 @@ function reducer(state: ContextInterface, action: any): ContextInterface {
   switch (action.type) {
     case "LOGIN":
       // Set cookies
+      Cookies.set("accessToken", action.payload.token, {
+        expires: 7,
+        path: "",
+      });
 
       // Set state
       return {
@@ -21,6 +25,10 @@ function reducer(state: ContextInterface, action: any): ContextInterface {
         Token: action.payload.token,
       };
     case "LOGOUT":
+      // Remove cookies
+      Cookies.remove("Token");
+
+      // Set state
       return { ...state, ID: null, Username: null, Token: null };
     case "REFRESH_TOKEN":
       return { ...state, Token: action.payload };
@@ -30,6 +38,8 @@ function reducer(state: ContextInterface, action: any): ContextInterface {
         ID: action.payload.ID,
         Username: action.payload.username,
       };
+    case "SET_USERS":
+      return { ...state, Users: action.payload };
     default:
       return state;
   }

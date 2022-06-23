@@ -74,7 +74,7 @@ const SignUp: NextPage = () => {
           ...status,
           loading: false,
           error: true,
-          message: data.message,
+          message: data?.message || "An error occurred",
         });
       });
   };
