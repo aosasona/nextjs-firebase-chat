@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import type { NextPage } from "next";
 import Meta from "@/defaults/Meta";
 import Input from "@/components/Input";
@@ -6,6 +6,8 @@ import Button from "@/components/Button";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import Error from "@/components/Error";
+import request from "utils/request.util";
+import { GlobalContext } from "@/context/GlobalContext";
 
 interface Data {
   username: string;
@@ -20,6 +22,8 @@ interface Status {
 }
 
 const SignUp: NextPage = () => {
+  const { dispatch } = useContext(GlobalContext);
+
   const [data, setData] = useState<Data>({
     username: "",
     password: "",
@@ -44,7 +48,34 @@ const SignUp: NextPage = () => {
   // Form handler
   const formHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("submit");
+    setStatus({ ...status, loading: true });
+
+    request
+      .noauth()
+      .post("/api/auth/create", {
+        username: data.username,
+        password: data.password,
+        confirmPassword: data.confirmPassword,
+      })
+      .then(({ data }) => {
+        setStatus({ ...status, loading: false });
+        dispatch({
+          type: "LOGIN",
+          payload: {
+            ID: data.data.id,
+            Username: data.data.username,
+            Token: data.data.token,
+          },
+        });
+      })
+      .catch(({ response: { data } }) => {
+        setStatus({
+          ...status,
+          loading: false,
+          error: true,
+          message: data.message,
+        });
+      });
   };
   return (
     <AnimatePresence>
@@ -98,7 +129,7 @@ const SignUp: NextPage = () => {
                   name="confirmPassword"
                   label="Confirm Password"
                   required={true}
-                  value={data.password}
+                  value={data.confirmPassword}
                   onChange={handleChange}
                   className="mb-4"
                 />

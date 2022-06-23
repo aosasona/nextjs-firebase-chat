@@ -1,10 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import type { NextPage } from "next";
 import Meta from "@/defaults/Meta";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
+import request from "utils/request.util";
+import { GlobalContext } from "@/context/GlobalContext";
+import Error from "@/components/Error";
 
 interface Data {
   username: string;
@@ -18,6 +21,7 @@ interface Status {
 }
 
 const Login: NextPage = () => {
+  const { dispatch } = useContext(GlobalContext);
   const [data, setData] = useState<Data>({
     username: "",
     password: "",
@@ -33,10 +37,42 @@ const Login: NextPage = () => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
+  // Error handler
+  const resetError = () => {
+    setStatus({ ...status, error: false, message: "" });
+  };
+
   // Form handler
   const formHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("submit");
+
+    setStatus({ ...status, loading: true });
+
+    request
+      .noauth()
+      .post("/api/auth/login", {
+        username: data.username,
+        password: data.password,
+      })
+      .then(({ data }) => {
+        setStatus({ ...status, loading: false });
+        dispatch({
+          type: "LOGIN",
+          payload: {
+            ID: data.data.id,
+            Username: data.data.username,
+            Token: data.data.token,
+          },
+        });
+      })
+      .catch(({ response: { data } }) => {
+        setStatus({
+          ...status,
+          loading: false,
+          error: true,
+          message: data.message,
+        });
+      });
   };
   return (
     <AnimatePresence>
@@ -58,6 +94,11 @@ const Login: NextPage = () => {
             className="flex flex-col w-full rounded-2xl px-2 lg:px-4 mt-8"
             onSubmit={formHandler}
           >
+            <Error
+              visible={status.error}
+              text={status.message}
+              onClose={resetError}
+            />
             <div>
               <Input
                 type="text"
