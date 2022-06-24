@@ -1,12 +1,14 @@
 import { useState, useEffect, useContext } from "react";
 import type { NextPage } from "next";
 import { GlobalContext } from "@/context/GlobalContext";
+import { useRouter } from "next/router";
 import ProtectedLayout from "@/defaults/ProtectedLayout";
 import request from "utils/request.util";
 import Error from "@/components/Error";
 import { HiOutlineUserCircle } from "react-icons/hi";
 
 const Index: NextPage = () => {
+  const router = useRouter();
   const { state } = useContext(GlobalContext);
   const [conversations, setConversations] = useState<any[]>([]);
   const [users, setUsers] = useState<any[]>([]);
@@ -95,10 +97,11 @@ const Index: NextPage = () => {
               Start A Conversation
             </h1>
             <section className="grid grid-cols-2 gap-4 mt-4">
-              {users.map((user) => (
+              {users.map((user, index) => (
                 <div
                   className="flex flex-row items-center justify-start gap-x-3 bg-neutral-800 py-4 px-5 rounded-2xl hover:border-2 hover:border-neutral-100 cursor-pointer transition-all duration-200"
-                  key={user.id}
+                  key={index}
+                  onClick={() => router.push(`/chat/${user?.username}`)}
                 >
                   <HiOutlineUserCircle size={33} className="text-neutral-500" />
                   <p className="text-neutral-500 font-medium">
