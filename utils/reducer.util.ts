@@ -31,12 +31,13 @@ function reducer(state: ContextInterface, action: any): ContextInterface {
       // Set state
       return { ...state, ID: null, Username: null, Token: null };
     case "REFRESH_TOKEN":
-      return { ...state, Token: action.payload };
+      return { ...state, Token: action.payload, Loading: false };
     case "REFRESH_USER":
       return {
         ...state,
         ID: action.payload.ID,
         Username: action.payload.username,
+        Loading: false,
       };
     case "SET_USERS":
       return { ...state, Users: action.payload };

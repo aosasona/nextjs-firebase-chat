@@ -21,6 +21,7 @@ const GlobalProvider: FC<ContextInterface | null | any> = ({ children }) => {
     ID: null,
     Username: null,
     Token: null,
+    Loading: true,
     Users: [],
   };
 
@@ -38,7 +39,7 @@ const GlobalProvider: FC<ContextInterface | null | any> = ({ children }) => {
 
       request
         .auth(token)
-        .get("/api/users/me")
+        .get("/users/me")
         .then(({ data }) => {
           dispatch({
             type: "REFRESH_USER",

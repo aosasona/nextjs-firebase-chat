@@ -4,6 +4,7 @@ import Meta from "@/defaults/Meta";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { AnimatePresence, motion } from "framer-motion";
 import Error from "@/components/Error";
 import request from "utils/request.util";
@@ -23,7 +24,7 @@ interface Status {
 
 const SignUp: NextPage = () => {
   const { dispatch } = useContext(GlobalContext);
-
+  const router = useRouter();
   const [data, setData] = useState<Data>({
     username: "",
     password: "",
@@ -52,13 +53,13 @@ const SignUp: NextPage = () => {
 
     request
       .noauth()
-      .post("/api/auth/create", {
+      .post("/auth/create", {
         username: data.username,
         password: data.password,
         confirmPassword: data.confirmPassword,
       })
       .then(({ data }) => {
-        console.log(data);
+        // console.log(data);
         setStatus({ ...status, loading: false });
         dispatch({
           type: "LOGIN",
@@ -68,6 +69,7 @@ const SignUp: NextPage = () => {
             token: data.data.token,
           },
         });
+        router.push("/chat");
       })
       .catch(({ response: { data } }) => {
         setStatus({
