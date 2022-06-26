@@ -50,7 +50,7 @@ const GlobalProvider: FC<ContextInterface | null | any> = ({ children }) => {
           });
         })
         .catch(({ response }) => {
-          console.log(response.data.message);
+          console.log(response?.data?.message);
         });
     }
   }, []);

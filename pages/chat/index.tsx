@@ -30,15 +30,15 @@ const Index: NextPage = () => {
         .get("/chats")
         .then(({ data }) => {
           setConversations(data?.data);
-          setStatus({ ...status, loading: false });
+          setStatus((status) => ({ ...status, loading: false }));
         })
         .catch(({ response }) => {
-          setStatus({
+          setStatus((status) => ({
             ...status,
             loading: false,
             error: true,
             text: response?.data?.message || "Something went wrong!",
-          });
+          }));
         });
 
       // Get users
@@ -48,23 +48,26 @@ const Index: NextPage = () => {
         .then(({ data }) => {
           //   console.log(data);
           setUsers(data?.data);
-          setStatus({ ...status, loading: false });
+          setStatus((status) => ({ ...status, loading: false }));
         })
         .catch(({ response }) => {
-          setStatus({
+          setStatus((status) => ({
             ...status,
             loading: false,
             error: true,
             text: response?.data?.message || "Something went wrong!",
-          });
+          }));
         });
     }
   }, [state.Token]);
 
   return (
     <ProtectedLayout title="Chats">
-      <main className="w-[92%] lg:w-2/5 mx-auto mt-[4vh] lg:mt-[9vh]">
-        <h1 className="text-5xl lg:text-6xl font-bold">Chats</h1>
+      <nav className="w-screen fixed top-0 bg-neutral-700 bg-opacity-40 py-4 drop-shadow-md">
+        <h1 className="text-xl text-neutral-600 font-bold px-5">Velox</h1>
+      </nav>
+      <main className="w-[90%] lg:w-2/5 mx-auto mt-[11vh] lg:mt-[10vh]">
+        {/* <h1 className="text-4xl lg:text-5xl font-bold">Chats</h1> */}
         <Error
           visible={status.error}
           text={status.text}
@@ -82,7 +85,7 @@ const Index: NextPage = () => {
               {conversations?.length > 0 ? (
                 <></>
               ) : (
-                <div className="my-[10vh] flex items-center justify-center">
+                <div className="my-[8vh] flex items-center justify-center">
                   <p className="text-neutral-700 text-sm">
                     No conversations yet.
                   </p>
@@ -93,7 +96,7 @@ const Index: NextPage = () => {
         </div>
         {users?.length > 0 && (
           <>
-            <h1 className="text-4xl lg:text-4xl font-bold">
+            <h1 className="text-4xl lg:text-4xl text-neutral-600 font-bold">
               Start A Conversation
             </h1>
             <section className="grid grid-cols-2 gap-4 mt-4">
