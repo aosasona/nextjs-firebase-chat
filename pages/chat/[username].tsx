@@ -204,7 +204,7 @@ const ChatsPage: NextPage<Props> = ({ username }) => {
                   <div
                     key={index}
                     className={`max-w-[80%] text-sm font-semibold rounded-lg py-2 px-3 ${
-                      current.sender === user._id.toString()
+                      current.sender._id.toString() === user._id.toString()
                         ? "bg-neutral-600 text-neutral-100 self-start"
                         : "bg-neutral-100 text-neutral-800 self-end"
                     }`}
