@@ -161,9 +161,7 @@ const ChatsPage: NextPage<Props> = ({ username }) => {
       }
 
       // Add message to messages array
-      setMessages((messages) => {
-        return [...messages, payload];
-      });
+      conn.emit("chat", { chatId: chatID || "" });
 
       // Clear textbox
       setData((data: Data) => ({ ...data, message: "" }));
@@ -204,7 +202,7 @@ const ChatsPage: NextPage<Props> = ({ username }) => {
                   <div
                     key={index}
                     className={`max-w-[80%] text-sm font-semibold rounded-lg py-2 px-3 ${
-                      current.sender._id.toString() === user._id.toString()
+                      current?.sender?._id?.toString() === user?._id?.toString()
                         ? "bg-neutral-600 text-neutral-100 self-start"
                         : "bg-neutral-100 text-neutral-800 self-end"
                     }`}
@@ -228,7 +226,7 @@ const ChatsPage: NextPage<Props> = ({ username }) => {
       <div className="w-screen  fixed bottom-0 bg-neutral-800 py-3 px-2">
         <div className="w-full lg:w-4/6 mx-auto flex gap-x-2">
           <textarea
-            className="w-full text-sm bg-neutral-900 focus:outline-none placeholder:text-neutral-700 px-2 py-2 resize-none"
+            className="w-full text-base bg-neutral-900 focus:outline-none placeholder:text-neutral-700 px-2 py-2 resize-none"
             rows={data.focus ? 4 : 2}
             placeholder="Type a message..."
             onChange={(e) =>
