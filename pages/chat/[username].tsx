@@ -126,7 +126,11 @@ const ChatsPage: NextPage<Props> = ({ username }) => {
 
       // NEW MESSAGE
       socket.on(`received:${chatID || ""}`, (data: any) => {
-        setMessages((messages) => [...messages, data]);
+        // console.log(data);
+        // if (data?.message?.sender.toString() !== state.ID.toString()) {
+        //   setMessages((messages) => [...messages, data.message]);
+        // }
+        setMessages(data?.messages);
       });
 
       // CATCH ERRORS
@@ -170,10 +174,10 @@ const ChatsPage: NextPage<Props> = ({ username }) => {
 
   return (
     <ProtectedLayout title={`${username}`}>
-      <div className="w-screen flex items-center text-neutral-500 fixed top-0 bg-neutral-800 text-center gap-x-3 py-4 px-4 drop-shadow-md">
+      <div className="w-screen flex items-center text-neutral-500 fixed top-0 bg-neutral-800 text-center gap-x-3 py-4 px-4 drop-shadow-md z-[999]">
         <FiChevronLeft
           size={25}
-          className="cursor-pointer hover:bg-neutral-700 rounded-full p-1"
+          className="cursor-pointer hover:bg-neutral-700 rounded-full p-1 "
           onClick={() => router.push("/chat")}
         />
         <h1 className="font-bold tracking-wider self-end uppercase">
@@ -202,7 +206,7 @@ const ChatsPage: NextPage<Props> = ({ username }) => {
                   <div
                     key={index}
                     className={`max-w-[80%] text-sm font-semibold rounded-lg py-2 px-3 ${
-                      current?.sender?._id?.toString() === user?._id?.toString()
+                      current?.sender.toString() === user?._id?.toString()
                         ? "bg-neutral-600 text-neutral-100 self-start"
                         : "bg-neutral-100 text-neutral-800 self-end"
                     }`}
@@ -223,7 +227,7 @@ const ChatsPage: NextPage<Props> = ({ username }) => {
         )}
       </main>
 
-      <div className="w-screen  fixed bottom-0 bg-neutral-800 py-3 px-2">
+      <div className="w-screen fixed bottom-0 bg-neutral-800 py-3 px-2 z-[999]">
         <div className="w-full lg:w-4/6 mx-auto flex gap-x-2">
           <textarea
             className="w-full text-base bg-neutral-900 focus:outline-none placeholder:text-neutral-700 px-2 py-2 resize-none"
