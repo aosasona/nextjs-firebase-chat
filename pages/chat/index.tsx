@@ -47,6 +47,9 @@ const Index: NextPage = () => {
         .get("/users")
         .then(({ data }) => {
           //   console.log(data);
+
+          //Filter out the current user
+
           setUsers(data?.data);
           setStatus((status) => ({ ...status, loading: false }));
         })
@@ -83,7 +86,33 @@ const Index: NextPage = () => {
           ) : (
             <>
               {conversations?.length > 0 ? (
-                <></>
+                <div className="flex flex-col gap-y-4 mb-5">
+                  {conversations.map((current: any, index: number) => (
+                    <div
+                      className="flex flex-row items-center justify-start gap-x-3 bg-neutral-800 py-4 px-5 rounded-2xl hover:border-2 hover:border-neutral-100 cursor-pointer transition-all duration-200"
+                      key={index}
+                      onClick={() =>
+                        router.push(
+                          `/chat/${
+                            current?.userA?.username === state.Username
+                              ? current?.userB?.username
+                              : current?.userA?.username
+                          }`
+                        )
+                      }
+                    >
+                      <HiOutlineUserCircle
+                        size={33}
+                        className="text-neutral-500"
+                      />
+                      <p className="text-neutral-500 font-medium">
+                        {current?.userA?.username === state.Username
+                          ? current?.userB?.username
+                          : current?.userA?.username}
+                      </p>
+                    </div>
+                  ))}
+                </div>
               ) : (
                 <div className="my-[8vh] flex items-center justify-center">
                   <p className="text-neutral-700 text-sm">
