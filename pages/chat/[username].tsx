@@ -205,15 +205,16 @@ const ChatsPage: NextPage<Props> = ({ username }) => {
             setStatus((status) => ({ ...status, error: false, text: "" }))
           }
         />
-        {status.loading ? (
+        {status.loading && !status.success ? (
           <div className="">
             <Loader />
           </div>
         ) : (
           <InfiniteScroll
             loadMore={() => {}}
-            pageStart={messages.length}
-            className="mb-[6vh]"
+            hasMore={false}
+            pageStart={messages?.length}
+            className="mb-[12vh]"
           >
             {messages.length > 0 ? (
               <div className="flex flex-col gap-y-3 w-full">
