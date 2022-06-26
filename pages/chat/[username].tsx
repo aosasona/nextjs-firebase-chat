@@ -214,7 +214,7 @@ const ChatsPage: NextPage<Props> = ({ username }) => {
             loadMore={() => {}}
             hasMore={false}
             pageStart={messages?.length}
-            className="mb-[12vh]"
+            className="mb-[14vh]"
           >
             {messages.length > 0 ? (
               <div className="flex flex-col gap-y-3 w-full">
