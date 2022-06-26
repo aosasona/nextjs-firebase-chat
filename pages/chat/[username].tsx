@@ -2,6 +2,7 @@ import { useState, useEffect, useContext, useRef } from "react";
 import type { NextPage, GetServerSideProps } from "next";
 import { GlobalContext } from "@/context/GlobalContext";
 import * as timeago from "timeago.js";
+import InfiniteScroll from "react-infinite-scroller";
 import { io, Socket } from "socket.io-client";
 import ProtectedLayout from "@/defaults/ProtectedLayout";
 import { API_URL } from "config/api.config";
@@ -209,7 +210,11 @@ const ChatsPage: NextPage<Props> = ({ username }) => {
             <Loader />
           </div>
         ) : (
-          <>
+          <InfiniteScroll
+            loadMore={() => {}}
+            pageStart={messages.length}
+            className="mb-[6vh]"
+          >
             {messages.length > 0 ? (
               <div className="flex flex-col gap-y-3 w-full">
                 {messages.map((current: any, index: number) => (
@@ -222,7 +227,13 @@ const ChatsPage: NextPage<Props> = ({ username }) => {
                     }`}
                   >
                     {current?.message}
-                    <p className="text-right opacity-40 text-[10px] font-normal">
+                    <p
+                      className={`${
+                        current?.sender?.toString() === user?._id?.toString()
+                          ? "text-left"
+                          : "text-right"
+                      } opacity-40 text-[10px] font-normal`}
+                    >
                       {timeago.format(current?.createdAt)}
                     </p>
                   </div>
@@ -233,7 +244,7 @@ const ChatsPage: NextPage<Props> = ({ username }) => {
                 Start a new conversation
               </p>
             )}
-          </>
+          </InfiniteScroll>
         )}
       </main>
 
@@ -241,7 +252,7 @@ const ChatsPage: NextPage<Props> = ({ username }) => {
         <div className="w-full lg:w-4/6 mx-auto flex gap-x-2">
           <textarea
             className="w-full text-base bg-neutral-900 focus:outline-none placeholder:text-neutral-700 px-2 py-2 resize-none"
-            rows={data.focus ? 4 : 2}
+            rows={2}
             placeholder="Type a message..."
             onChange={(e) =>
               setData((data) => ({ ...data, message: e.target.value }))

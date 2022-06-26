@@ -1,3 +1,3 @@
-# NextJS-Tailwind-Typescript Starter
+# Velox Chat
 
-### NextJS boilerplate for Tailwind and Typescript
+I am aware this is quite basic, this is simply to understand using sockets for private chats.
