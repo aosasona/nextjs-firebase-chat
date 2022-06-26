@@ -119,6 +119,16 @@ const ChatsPage: NextPage<Props> = ({ username }) => {
         // console.log("Connected to socket");
       });
 
+      // New chat while on the same page
+      socket.on("new", (data: any) => {
+        if (
+          (data?.userA == state.ID && data?.userB == user.id) ||
+          (data?.userB == state.ID && data?.userA == user.id)
+        ) {
+          setChatID(data?.chatId);
+        }
+      });
+
       // Get ALL messages
       socket.on(`chat:${chatID || ""}`, (data: any) => {
         setMessages(data?.messages);
